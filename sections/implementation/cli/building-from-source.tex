@@ -1,0 +1,23 @@
+\subsubsection{Building from Source}
+
+The source code for the Styx CLI project is available on GitHub \cite{styx-cli-github} under the MIT License, just like the core library. The process of building it from source is similar as well:
+
+\begin{minted}[xleftmargin=0.75cm]{text}
+$ git clone https://github.com/mariusschulz/styx-cli.git
+$ cd styx-cli
+$ npm install
+\end{minted}
+
+Unlike the core library, the Styx command-line interface is not written in TypeScript. It does, however, use ECMAScript 2015 language features that need to be transpiled to ECMAScript 5 in order to be widely supported by current Node.js installations. The Babel \cite{babel} transpiler, which is installed as part of the \texttt{gulp-babel} npm package, is used to do that. It is invoked by the Gulp build system when executing the \code{babel} task defined in the \texttt{gulpfile.js} configuration file. The Gulp \code{babel} task can be triggered by running this npm script:
+
+\begin{minted}[xleftmargin=0.75cm]{text}
+$ npm run babel
+\end{minted}
+
+Another npm script has been defined for setting up a file watcher that re-triggers the Babel transpilation process whenever a \texttt{.js} file changes:
+
+\begin{minted}[xleftmargin=0.75cm]{text}
+$ npm run babel-watch
+\end{minted}
+
+After the transpilation is done, the \texttt{built} directory contains the source files making up the Styx command-line interface. All JavaScript files have been down-leveled from ECMAScript 2015 to ECMAScript 5, ready to be executed by any current Node.js version.

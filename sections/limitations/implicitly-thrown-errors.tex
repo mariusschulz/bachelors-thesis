@@ -1,0 +1,15 @@
+\pagebreak
+\subsection{Implicitly Thrown Errors}
+\label{sec:implicitly-thrown-errors}
+
+In JavaScript, exceptions can be thrown explicitly using the \code{throw} keyword. When an exception is thrown, none of the statements following the \code{throw} statement will be executed. Instead, control will be passed to the first \code{catch} block in the call stack. If no such \code{catch} block exists, the exception will cause the program to terminate. \cite{mdn-throw}
+
+However, the absence of \code{throw} statements within a piece of code does not guarantee that no error will be thrown within it. For instance, the following situations (and many others that are not listed below) cause the JavaScript runtime to throw an error:
+
+\begin{itemize}
+  \item A \code{ReferenceError} is thrown when trying to dereference a variable that has not previously been declared. \cite{mdn-referencerror}
+  \item A \code{SyntaxError} is thrown when the JavaScript engine detects syntactically invalid code during its initial parsing phase. \cite{mdn-syntaxerror}
+  \item A \code{TypeError} is thrown when a variable that does not hold a reference to a function is attempted to be called as a function. \cite{mdn-typeerror}
+\end{itemize}
+
+This list is by far not exhaustive, but it illustrates that many common operations may cause an error to be thrown implicitly. Consequently, the control flow graph for a piece of code would have to include error transitions from every single node that could possibly cause an error to either a \code{catch} handler or the error exit node of a program. That would result in many additional edges and an even more cluttered control flow graph. It is for this reason that the implementation outlined in section \ref{sec:implementation} (``\nameref{sec:implementation}'') does not include transitions for implicitly thrown errors.

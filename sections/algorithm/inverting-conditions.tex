@@ -1,0 +1,49 @@
+\subsubsection{Simplifying Negated Conditions}
+
+As Figure \ref{fig:if-else-structural-pattern} in section \ref{sec:composing-structural-patterns} (``\nameref{sec:composing-structural-patterns}'') shows, an \code{if}-statement with an \code{else}-block is represented by a control flow structure that has two conditional edges. One is taken when the condition is truthy (the \emph{then-branch}), the other when it is falsy (the \emph{else-branch}). The following listing illustrates this situation:
+
+\begin{minted}[linenos,xleftmargin=0.75cm]{js}
+if (x < 0) {
+    // ...
+} else {
+    // ...
+}
+\end{minted}
+
+The then-branch is taken when \code{x < 0} returns a truthy value. It might therefore seem intuitive to assume the else-branch to be taken if and only if \code{x >= 0} is truthy. However, the precise semantics are slightly different. The else-branch is taken if and only if \code{x < 0} returns a falsy value. In general, the correct negation of \code{x < 0} is not \code{x >= 0}, but \code{!(x < 0)}. The reason for this seemingly odd behavior is that JavaScript defines some special values for which no reasonable comparison can be done using relational operators. \code{NaN} and \code{undefined} are two such values for which no sound order relation is defined.
+
+\newpage
+
+The following relational comparisons against \code{NaN} and \code{undefined} illustrate why the condition cannot be safely inverted (without changing the semantics of the program) by swapping the operator accordingly:
+
+\begin{minted}[linenos,xleftmargin=0.75cm]{js}
+NaN <  0   // false
+NaN >  0   // false
+NaN <= 0   // false
+NaN >= 0   // false
+
+undefined <  0   // false
+undefined >  0   // false
+undefined <= 0   // false
+undefined >= 0   // false
+\end{minted}
+
+This observation prevents some simplification of conditional edges in a control flow graph. To stay true to the program semantics, the conditional annotation of the edge transitioning into the else-branch must be \code{!(x < 0)} (rather than the simpler \code{x >= 0}) to account for those special values.
+
+However, some simplification of expressions is possible. Both the equality comparison operators (\code{==} and \code{!=}) and the identity comparison operators (\code{===} and \code{!==}) can safely be negated by flipping the first character from an equal sign to an exclamation mark, and vice-versa. Also, two consecutive applications of the unary negation operator (\code{!}) cancel each other out and do not affect the truthiness of a value. Therefore, the following simplifications are safe and do not affect the semantics of the program:
+
+\begin{minted}[linenos,xleftmargin=0.75cm]{js}
+// Simplifying a negated identity comparison
+!(x === 0)
+x !== 0
+
+// Simplifying a negated inequality comparison
+!(x != 0)
+x == 0
+
+// Canceling out a double negative
+!!(x)
+x
+\end{minted}
+
+Nota bene: The above simplifications are only semantically correct w.r.t. the evaluation of the expression to a truthy or falsy value, as is the case when evaluating the condition of an \code{if}-statement. The simplifications do not necessarily result in an identical value or even a value of the same type. For instance, the unary negation operator coerces its operand into a boolean value. Therefore, \code{!!0}, which evaluates to the boolean value \code{false} (because \code{!0} evaluates to \code{true}), is not identical to \code{0}, which is a numeric value. Both are falsy values, though, and thus direct control flow correctly.

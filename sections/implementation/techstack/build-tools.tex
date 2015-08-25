@@ -1,0 +1,19 @@
+\subsubsection{Build Tools}
+\label{sec:build-tools}
+
+To build Styx from source, both the TypeScript compiler and the Browserify module bundler \cite{browserify} must be run as discussed in the following paragraphs.
+
+\paragraph{TypeScript Compiler.}
+Since the entire code base for the Styx core library is written in TypeScript, it needs to be transpiled to plain JavaScript before it can be executed by a JavaScript engine. The official TypeScript compiler, \textit{tsc}, is used to accomplish that. It ships as part of the npm \cite{npm} package \texttt{typescript}, which can be installed by running the following command:
+
+\begin{minted}[xleftmargin=0.75cm]{text}
+$ npm install --global typescript
+\end{minted}
+
+The \texttt{src} directory of the code base contains a special \texttt{tsconfig.json} file that specifies configuration settings for the TypeScript compiler, such as the list of files to include and which compiler flags to set. During development, the compiler is run in \textit{watch} mode via the \texttt{-w} flag: every time a \texttt{.ts} file changes on disk, the TypeScript compiler will type-check and transpile it. The generated JavaScript code is then written to a \texttt{.js} file located within the destination folder that is specified in \texttt{tsconfig.json}.
+
+\paragraph{Modules.}
+To structure the code base, the Styx core library is broken up into native JavaScript modules that were introduced as part of ECMAScript 2015. As of version 1.5, the TypeScript compiler understands this syntax and is able to transpile the modules into a different format. Styx targets CommonJS modules \cite{commonjs-modules}, which is specified within \texttt{tsconfig.json} by setting the \code{module} property to \code{"commonjs"}. Following the CommonJS format, the rewritten modules declare their imports via \code{require} and their exported values via \code{exports}. Once all modules have been transpiled this way, the Styx core library is now ready to be loaded from within a Node.js application or any other JavaScript environment that supports CommonJS modules.
+
+\paragraph{Browserify.}
+While a Node.js application is able to resolve CommonJS dependencies that are imported via the \code{require} function, browsers cannot do that natively. One option to work around this issue is to use a module loader, which dynamically resolves CommonJS dependencies. The disadvantage of such module loaders is that they have to make additional HTTP requests to resolve the declared dependencies. Depending on the nesting level of \code{require} calls and the performance goals of an application, dynamically fetching CommonJS modules might not be a viable option. This is why the build process of the Styx core library includes feeding the transpiled CommonJS modules to Browserify \cite{browserify}, a popular module bundler. Starting at a given entry file, Browserify will recursively analyze all the \code{require} calls and bundle all dependencies found. The result is a single JavaScript file that can easily be requested by a browser.

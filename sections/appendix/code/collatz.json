@@ -1,0 +1,319 @@
+{
+  "program": {
+    "flowGraph": {
+      "nodes": [
+        {
+          "id": 1,
+          "type": "Entry"
+        },
+        {
+          "id": 2,
+          "type": "SuccessExit"
+        }
+      ],
+      "edges": [
+        {
+          "from": 1,
+          "to": 2,
+          "type": "Epsilon",
+          "label": "",
+          "data": null
+        }
+      ]
+    }
+  },
+  "functions": [
+    {
+      "id": 1,
+      "name": "collatzSequence",
+      "flowGraph": {
+        "nodes": [
+          {
+            "id": 4,
+            "type": "Entry"
+          },
+          {
+            "id": 5,
+            "type": "SuccessExit"
+          },
+          {
+            "id": 7,
+            "type": "Normal"
+          },
+          {
+            "id": 8,
+            "type": "Normal"
+          },
+          {
+            "id": 9,
+            "type": "Normal"
+          },
+          {
+            "id": 10,
+            "type": "Normal"
+          },
+          {
+            "id": 11,
+            "type": "Normal"
+          },
+          {
+            "id": 13,
+            "type": "Normal"
+          },
+          {
+            "id": 15,
+            "type": "Normal"
+          }
+        ],
+        "edges": [
+          {
+            "from": 4,
+            "to": 7,
+            "type": "Normal",
+            "label": "n = $$params[0]",
+            "data": {
+              "type": "AssignmentExpression",
+              "operator": "=",
+              "left": {
+                "type": "Identifier",
+                "name": "n"
+              },
+              "right": {
+                "type": "MemberExpression",
+                "computed": true,
+                "object": {
+                  "type": "Identifier",
+                  "name": "$$params"
+                },
+                "property": {
+                  "type": "Literal",
+                  "raw": "0",
+                  "value": 0
+                }
+              }
+            }
+          },
+          {
+            "from": 7,
+            "to": 8,
+            "type": "Normal",
+            "label": "sequence = [n]",
+            "data": {
+              "type": "VariableDeclarator",
+              "id": {
+                "type": "Identifier",
+                "name": "sequence"
+              },
+              "init": {
+                "type": "ArrayExpression",
+                "elements": [
+                  {
+                    "type": "Identifier",
+                    "name": "n"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "from": 8,
+            "to": 9,
+            "type": "Conditional",
+            "label": "n !== 1",
+            "data": {
+              "type": "BinaryExpression",
+              "operator": "!==",
+              "left": {
+                "type": "Identifier",
+                "name": "n"
+              },
+              "right": {
+                "type": "Literal",
+                "value": 1,
+                "raw": "1"
+              }
+            }
+          },
+          {
+            "from": 8,
+            "to": 10,
+            "type": "Conditional",
+            "label": "n === 1",
+            "data": {
+              "type": "BinaryExpression",
+              "operator": "===",
+              "left": {
+                "type": "Identifier",
+                "name": "n"
+              },
+              "right": {
+                "type": "Literal",
+                "value": 1,
+                "raw": "1"
+              }
+            }
+          },
+          {
+            "from": 9,
+            "to": 11,
+            "type": "Conditional",
+            "label": "(n % 2) === 0",
+            "data": {
+              "type": "BinaryExpression",
+              "operator": "===",
+              "left": {
+                "type": "BinaryExpression",
+                "operator": "%",
+                "left": {
+                  "type": "Identifier",
+                  "name": "n"
+                },
+                "right": {
+                  "type": "Literal",
+                  "value": 2,
+                  "raw": "2"
+                }
+              },
+              "right": {
+                "type": "Literal",
+                "value": 0,
+                "raw": "0"
+              }
+            }
+          },
+          {
+            "from": 9,
+            "to": 13,
+            "type": "Conditional",
+            "label": "(n % 2) !== 0",
+            "data": {
+              "type": "BinaryExpression",
+              "operator": "!==",
+              "left": {
+                "type": "BinaryExpression",
+                "operator": "%",
+                "left": {
+                  "type": "Identifier",
+                  "name": "n"
+                },
+                "right": {
+                  "type": "Literal",
+                  "value": 2,
+                  "raw": "2"
+                }
+              },
+              "right": {
+                "type": "Literal",
+                "value": 0,
+                "raw": "0"
+              }
+            }
+          },
+          {
+            "from": 10,
+            "to": 5,
+            "type": "AbruptCompletion",
+            "label": "return sequence",
+            "data": {
+              "type": "ReturnStatement",
+              "argument": {
+                "type": "Identifier",
+                "name": "sequence"
+              }
+            }
+          },
+          {
+            "from": 11,
+            "to": 15,
+            "type": "Normal",
+            "label": "n = n / 2",
+            "data": {
+              "type": "AssignmentExpression",
+              "operator": "=",
+              "left": {
+                "type": "Identifier",
+                "name": "n"
+              },
+              "right": {
+                "type": "BinaryExpression",
+                "operator": "/",
+                "left": {
+                  "type": "Identifier",
+                  "name": "n"
+                },
+                "right": {
+                  "type": "Literal",
+                  "value": 2,
+                  "raw": "2"
+                }
+              }
+            }
+          },
+          {
+            "from": 13,
+            "to": 15,
+            "type": "Normal",
+            "label": "n = (3 * n) + 1",
+            "data": {
+              "type": "AssignmentExpression",
+              "operator": "=",
+              "left": {
+                "type": "Identifier",
+                "name": "n"
+              },
+              "right": {
+                "type": "BinaryExpression",
+                "operator": "+",
+                "left": {
+                  "type": "BinaryExpression",
+                  "operator": "*",
+                  "left": {
+                    "type": "Literal",
+                    "value": 3,
+                    "raw": "3"
+                  },
+                  "right": {
+                    "type": "Identifier",
+                    "name": "n"
+                  }
+                },
+                "right": {
+                  "type": "Literal",
+                  "value": 1,
+                  "raw": "1"
+                }
+              }
+            }
+          },
+          {
+            "from": 15,
+            "to": 8,
+            "type": "Normal",
+            "label": "sequence.push(n)",
+            "data": {
+              "type": "CallExpression",
+              "callee": {
+                "type": "MemberExpression",
+                "computed": false,
+                "object": {
+                  "type": "Identifier",
+                  "name": "sequence"
+                },
+                "property": {
+                  "type": "Identifier",
+                  "name": "push"
+                }
+              },
+              "arguments": [
+                {
+                  "type": "Identifier",
+                  "name": "n"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

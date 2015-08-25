@@ -1,0 +1,6 @@
+\subsubsection{JSON Export}
+\label{sec:json-export}
+
+The JSON export is a thin wrapper around the Object export described in the previous section. Instead of returning the raw JavaScript object itself, the \code{exportAsJson} method serializes it as JSON and returns the resulting string. \code{exportAsJson} accepts an optional second parameter that can specify a \code{pretty} property. The resulting JSON string will be indented for better readability if \code{pretty} has a truthy value; otherwise, it will be minified.\footnote{Note that the JSON string is only indented and formatted to help a human reader understand the object structure. Outside of string literals, whitespace is insignificant and is generally ignored by JSON parsers.}
+
+\nameref{sec:appendix} lists an example of a flow programs exported as JSON.

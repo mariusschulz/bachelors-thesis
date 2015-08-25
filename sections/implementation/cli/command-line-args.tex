@@ -1,0 +1,31 @@
+\subsubsection{Command-Line Arguments}
+\label{sec:styx-cli-args}
+
+Using the Styx command-line interface installed via npm, a JavaScript file can be analyzed by running the following command:
+
+\begin{minted}[xleftmargin=0.75cm]{text}
+$ styx input.js
+\end{minted}
+
+This simple usage of the \texttt{styx} executable provides a single argument, the JavaScript file to analyze, which is the only argument that is required. The following command-line arguments are accepted:
+
+\begin{itemize}
+  \item The \texttt{-{}-format} argument (or its \texttt{-f} alias) determines the target output format. If specified, this argument must be either \texttt{json} or \texttt{dot}. If not specified, the export defaults to the JSON format.
+  \item The \texttt{-{}-graph} argument (or its \texttt{-g} alias) specifies the id of the function whose control flow graph should be exported. This argument only applies when \texttt{-{}-format} is set to \texttt{dot}. If not present or set to a falsy value, the main program's control flow graph will be exported.
+  \item The \texttt{-{}-minify-json} (or its \texttt{-m} alias) argument can be provided to export minified (rather than indented) JSON to minimize the size of the output. This argument only applies when \texttt{-{}-format} is set to \texttt{json}.
+  \item The \texttt{-{}-output} argument (or its \texttt{-o} alias) can be used to specify a path to a file to which the output should be redirected. If not present, the serialized export will be written to standard output.
+  \item The \texttt{-{}-help} argument displays a help screen that lists instructions for command-line usage and all available arguments. If the \texttt{-{}-help} argument is present, no export will happen, no matter what other arguments are specified; instead, only the help screen will be shown.
+\end{itemize}
+
+As an alternative to the \texttt{-{}-output} argument, the Unix output redirection operator (\texttt{\textgreater}) can be used to write the serialized export to a file. The following two commands are therefore semantically equivalent:
+
+\begin{minted}[xleftmargin=0.75cm]{text}
+$ styx input.js --output output.json
+$ styx input.js > output.json
+\end{minted}
+
+Finally, the following command exports the control flow graph of the function with the id 42 in DOT format:
+
+\begin{minted}[xleftmargin=0.75cm]{text}
+$ styx input.js --format dot --graph 42 > output.gv
+\end{minted}

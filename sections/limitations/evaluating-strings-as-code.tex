@@ -1,0 +1,36 @@
+\pagebreak
+\subsubsection{Evaluating Strings As Code}
+
+In addition to allowing string-based access to object properties, JavaScript provides other language mechanisms that lead to highly dynamic code execution. The most obvious such construct is the global \code{eval} function that evaluates a given string as code:
+
+\begin{minted}[linenos,xleftmargin=0.75cm]{js}
+var count = 0;
+eval("count++;");
+\end{minted}
+
+After running the above code, \code{count} contains the value \code{1}. The string passed to the \code{eval} function can contain any sequence of statements or expressions, including calls to \code{eval} itself. Generally speaking, that makes it impossible for a static analyzer to understand what statements and expressions are being executed in what order. To further complicate matters, the string that is being evaluated does not have to be a string literal with a known constant value. It can be the result of any expression evaluating to a string, similar to dynamic property keys.
+
+Another difficulty is that in some cases, it is not even possible to statically decide whether a program calls the \code{eval} function anywhere. The following code snippets illustrates how dynamic property access is used to access the \code{eval} function without explicitly mentioning its name:
+
+\begin{minted}[linenos,xleftmargin=0.75cm]{js}
+var obj = window;
+var key = String.fromCharCode(101, 118, 97, 108);
+var result = obj[key]("2 + 2");
+\end{minted}
+
+The global object within a browser environment, \code{window}, is assigned to the variable \code{obj}. At the same time, \code{key} is assigned the value \code{"eval"} by creating a string from the given Unicode values, which represent the four characters \textit{e}, \textit{v}, \textit{a}, and \textit{l}. Finally, the dynamic property access returns the \code{eval} function defined on the global object and evaluates the string \code{"2 + 2"}. Therefore, \code{result} contains the value \code{4}.
+
+The following example illustrates the unpredictability of evaluating arbitrary JavaScript code using the \code{eval} function:
+
+\begin{minted}[linenos,xleftmargin=0.75cm]{js}
+var hasEvalBeenRun = false;
+
+function runEval(string) {
+    eval(string);
+    hasEvalBeenRun = true;
+}
+
+runEval("var hasEvalBeenRun;");
+\end{minted}
+
+Looking at the variable declaration and the \code{runEval} function, one might assume that \code{hasEvalBeenRun} is set to \code{true} after the function has been executed (and given that running \code{eval} did not throw an exception). This does not have to be the case, though, as the example shows. By evaluating the string \code{"var hasEvalBeenRun;"} within the function, a new local variable binding is created that \emph{shadows} the outer variable of the same name. Thus, the assignment does not modify the outer variable, but the local one.

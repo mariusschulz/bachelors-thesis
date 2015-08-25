@@ -1,0 +1,31 @@
+\subsubsection{DOT Export}
+
+When the control flow graph of the \code{collatzSequence} function is exported in DOT format, the Styx core library returns the following graph description:
+
+\vspace{0.15cm}
+
+\begin{minted}[linenos,xleftmargin=0.75cm]{text}
+// collatzSequence
+digraph control_flow_graph {
+    node [shape = doublecircle] 6
+    node [shape = circle]
+    
+    // Unconditional edges
+     1 -> 2  [label = "n = $$params[0]"]
+     2 -> 3  [label = "sequence = [n]"]
+     4 -> 6  [label = "return []"]
+     7 -> 6  [label = "return sequence"]
+     9 -> 11 [label = "n = n / 2"]
+    10 -> 11 [label = "n = (3 * n) + 1"]
+    11 -> 5  [label = "sequence.push(n)"]
+    
+    // Conditional edges
+    edge [color = red, fontcolor = red]
+    3 -> 4  [label = "n <= 0"]
+    3 -> 5  [label = "!(n <= 0)"]
+    5 -> 8  [label = "n !== 1"]
+    5 -> 7  [label = "n === 1"]
+    8 -> 9  [label = "(n % 2) === 0"]
+    8 -> 10 [label = "(n % 2) !== 0"]
+}
+\end{minted}

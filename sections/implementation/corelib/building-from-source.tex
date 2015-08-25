@@ -1,0 +1,40 @@
+\subsubsection{Building from Source}
+
+The source code for Styx is published under the permissive MIT License \cite{mit-license} and is publicly available on GitHub \cite{styx-github}. To build Styx from source, the Git repository needs to be cloned on a local development machine. By running the following commands, the repository is going to be cloned into the \texttt{styx} folder, which is then made the current working directory:
+
+\begin{minted}[xleftmargin=0.75cm]{text}
+$ git clone https://github.com/mariusschulz/styx.git
+$ cd styx
+\end{minted}
+
+Now that the repository has been set up, the npm dependencies declared in the special \texttt{package.json} file need to be restored. They can be installed via npm by running the \texttt{install} command without any arguments:
+
+\begin{minted}[xleftmargin=0.75cm]{text}
+$ npm install
+\end{minted}
+
+As described in the ``\nameref{sec:build-tools}'' section, the TypeScript code must be transpiled into plain JavaScript. That is most easily done by calling the TypeScript compiler with \texttt{-p} argument pointing to the directory containing the \texttt{tsconfig.json} configuration file (assuming that the current working directory is the root of the Git repository):
+
+\begin{minted}[xleftmargin=0.75cm]{text}
+$ tsc -p src
+\end{minted}
+
+To simplify the process of bundling modules using Browserify as much as possible, the Gulp \cite{gulp} build system has been set up. It defines a \code{browserify} task in its \texttt{gulpfile.js} configuration file that is found in the repository root. Additionally, the \texttt{package.json} file defines an npm script called \code{browserify} so that the module bundling can be triggered by running the following command:
+
+\begin{minted}[xleftmargin=0.75cm]{text}
+$ npm run browserify
+\end{minted}
+
+During development, it is handy to have both the TypeScript compiler and Browserify listen for file changes. When a \texttt{.ts} file is saved within the \texttt{src} folder, the TypeScript compiler will transpile it immediately and save the corresponding \texttt{.js} file within the destination directory. That, in turn, will be picked up by the Browserify listener, which will trigger the module bundling again.
+
+To run the TypeScript compiler in watch mode, call it with the \texttt{-w} flag:
+
+\begin{minted}[xleftmargin=0.75cm]{text}
+$ tsc -p src -w
+\end{minted}
+
+The browserify listener can be started by running another npm script:
+
+\begin{minted}[xleftmargin=0.75cm]{text}
+$ npm run browserify-watch
+\end{minted}

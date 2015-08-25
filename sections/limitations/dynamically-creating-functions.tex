@@ -1,0 +1,11 @@
+\subsubsection{Dynamically Creating Functions}
+
+Another dynamic language construct is the \code{Function} constructor, which makes it possible to define new functions at runtime. It accepts an arbitrary number of string parameters, the last of which represents the function body. All other parameters are treated as the names of the function's formal arguments, in the order in which they are passed. \cite{mdn-function}
+
+The following code snippet shows how a simple \code{add} function can be created by calling the \code{Function} constructor with two argument names and a function body calculating and returning the sum of the given values:
+
+\begin{minted}[linenos,xleftmargin=0.75cm]{js}
+var add = new Function("a", "b", "return a + b;");
+\end{minted}
+
+Similar to the evaluation of strings as code using the \code{eval} function, the \code{Function} constructor poses a problem for static analyzers. The string representation of the function body does not have to be a string literal, which would have a constant value. Typically, the \code{Function} constructor is used to create a function whose body is put together using dynamic string concatenation of code fragments. In general, this makes it impossible to predict statically what the body of the function will look like.

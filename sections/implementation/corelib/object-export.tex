@@ -1,0 +1,77 @@
+\subsubsection{Object Export}
+\label{sec:object-export}
+
+When a flow program is exported as a JavaScript object, the returned value adheres to the following \textit{FlowProgram} schema:
+
+\noindent
+\begin{minipage}[t]{0.56\textwidth}
+\begin{listing}[H]
+\begin{minted}[xleftmargin=0.4cm]{ts}
+interface FlowProgram {
+    program:   MainProgram;
+    functions: FlowFunction[];
+}
+
+interface MainProgram {
+    flowGraph: FlowGraph;
+}
+
+interface FlowEdge {
+    from:  number;
+    to:    number;
+    type:  string;
+    label: string;
+    data:  Object;
+}
+\end{minted}
+\end{listing}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.44\textwidth}
+\begin{listing}[H]
+\begin{minted}{ts}
+interface FlowFunction {
+    id:        number;
+    name:      string;
+    flowGraph: FlowGraph;
+}
+
+interface FlowGraph {
+    nodes: FlowNode[];
+    edges: FlowEdge[];
+}
+
+interface FlowNode {
+    id:   number;
+    type: string;
+}
+\end{minted}
+\end{listing}
+\end{minipage}
+
+\paragraph{FlowProgram.}
+A flow program that has been exported as a JavaScript object follows the \textit{FlowProgram} schema, which defines the two properties \code{program} and \code{functions}. The \code{program} property holds a single descriptor object for the main program. Similarly, the \code{functions} property holds an array of function descriptors, each of which stores both an \code{id} and a \code{name} property to uniquely identify the function. Both \textit{MainProgram} and \textit{FlowFunction} descriptors define a \code{flowGraph} property containing the associated control flow graph.
+
+\paragraph{FlowGraph.}
+The \textit{FlowGraph} schema defines the two properties \code{nodes} and \code{edges} that are both flat arrays. Representing a control flow graph this way has the advantage that every node and every edge only appears once in the serialized export. If, however, a node were to define an \code{outgoingEdges} property, every edge of that array would have to be part of another node's \code{incomingEdges} property as well. In that case, all edges would have been serialized twice, thus complicating the deserialization process.
+
+\paragraph{FlowNode.}
+Within the \code{nodes} array, every element follows the \textit{FlowNode} schema and therefore has a numeric \code{id} property. In addition to that, the \code{type} property is set to one of the following string values:
+
+\begin{enumerate}
+  \item \code{"Entry"} for the single entry node of a control flow graph,
+  \item \code{"SuccessExit"} for its single success exit node,
+  \item \code{"ErrorExit"} for its single error exit node, or
+  \item \code{"Normal"} for all other nodes.
+\end{enumerate} 
+
+\paragraph{FlowEdge.}
+Finally, the \code{edges} array contains all edges of the control flow graph. An edge's \code{from} and \code{to} properties describe which source and target node it connects. Similar to a node, an edge also has a \code{type} property that has one of the following string values:
+
+\begin{enumerate}
+  \item \code{"AbruptCompletion"} for an edge representing a jump in control flow caused by an abrupt completion (\code{break}, \code{continue}, \code{return}, or \code{throw}),
+  \item \code{"Conditional"} for an edge that is part of a pair of edges representing the truthy and falsy paths of a condition,
+  \item \code{"Epsilon"} for an edge that has neither a label nor attached data and exists purely for connecting nodes in the control flow graph, or
+  \item \code{"Normal"} for all other edges.
+\end{enumerate} 
+
+The \code{label} property contains a string representation of the statement or expression for which the edge has been created. Additionally, the \code{data} property holds the part of the abstract syntax tree that Esprima parsed for the given statement or expression. That includes the precise type of the syntax tree node and all of its properties. The \code{data} property is useful when a deeper understanding of the current part of the control flow graph is required than can be obtained from the edge's string representation alone.

@@ -1,0 +1,28 @@
+\subsubsection{Installation via npm}
+
+In order to make the Styx library easily accessible to JavaScript developers, it has been published as a package to the npm Registry \cite{npm}, a public collection of open-source JavaScript packages. On a machine with npm set up, the library can be installed by running the following command:
+
+\begin{minted}[xleftmargin=0.75cm]{text}
+$ npm install --save styx
+\end{minted}
+
+Once the \texttt{styx} package has been installed, the library can be loaded through \code{require} calls like any npm package. A very simple example program (that also requires the \texttt{esprima} package to be installed) can look like this:
+
+\begin{minted}[linenos,xleftmargin=0.75cm]{js}
+// Import Esprima and Styx
+var esprima = require("esprima");
+var styx = require("styx");
+
+// Create a string with demo code
+var code = "console.log('Hello World!');";
+
+// Generate the abstract syntax tree
+var ast = esprima.parse(code);
+
+// Derive the control flow graph
+var flowProgram = styx.parse(ast);
+
+// Export the control flow graph as JSON
+var jsonExport = styx.exportAsJson(flowProgram);
+console.log(jsonExport);
+\end{minted}

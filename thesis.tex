@@ -1,0 +1,76 @@
+\documentclass[a4paper,11pt]{article}
+
+\usepackage{etoolbox}
+\usepackage{fancyvrb}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{import}
+\usepackage{listings}
+\usepackage{minted}
+\usepackage{url}
+
+\usepackage[
+	% Prevent hyperlinks from getting an ugly border
+    hidelinks,
+    % Set proper PDF metadata
+    pdftex,
+    pdfauthor={Marius Schulz},
+    pdftitle={Deriving Control Flow Graphs from JavaScript Programs},
+    pdfsubject={How to derive the static control flow graph from a JavaScript program's abstract syntax tree},
+    pdfkeywords={Control Flow Graphs, JavaScript}
+]{hyperref}
+
+\usepackage{sections/_meta/tumlogo}
+
+% Don't display "References" when rendering the bibliography
+\patchcmd{\thebibliography}{\section*{\refname}}{}{}{}
+
+% Use appropriate font size for line numbers in listings
+\renewcommand{\theFancyVerbLine}{{\small\arabic{FancyVerbLine}}}
+
+\lstset{basicstyle=\ttfamily}
+\newcommand{\code}[1]{\texttt{#1}}
+
+\setlength{\footnotesep}{0.4cm}
+\setlength{\skip\footins}{0.5cm}
+
+\def\doctype{Bachelor's Thesis in Informatics}
+\def\title{Deriving Control Flow Graphs \\ from JavaScript Programs}
+\def\germantitle{Herleitung von Kontrollflussgraphen \\ aus JavaScript-Programmen}
+\def\author{Marius Daniel Schulz}
+\def\date{August 15, 2015}
+
+\begin{document}
+
+\include{sections/_meta/cover}
+\include{sections/_meta/page-1}
+\include{sections/_meta/single-handed-composition}
+
+\newpage
+\thispagestyle{empty}
+\null
+
+\include{sections/_meta/abstract}
+
+\newpage
+\pagestyle{empty}
+\tableofcontents
+
+\newpage
+\pagestyle{plain}
+\setcounter{page}{1}
+
+\include{sections/introduction/introduction}
+\include{sections/capabilities/capabilities}
+\include{sections/limitations/limitations}
+\include{sections/algorithm/algorithm}
+\include{sections/implementation/implementation}
+\include{sections/future-work/future-work}
+
+\section{References}
+\bibliography{references}
+\bibliographystyle{plain}
+
+\include{sections/appendix/appendix}
+
+\end{document}

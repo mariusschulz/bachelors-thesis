@@ -1,0 +1,11 @@
+\subsubsection{Public Interface}
+
+Styx exposes a public interface that offers a \code{parse} method and several other methods for exporting a given control flow graph in various formats.
+
+\paragraph{parse.} The \code{parse} method accepts as its parameters an abstract syntax tree and a parser configuration. Using these two inputs, it derives a control flow graph for each of the program's functions and also for the main program itself. It then returns all control flow graphs within a wrapping data structure that is called a \textit{flow program}. The first parameter of the \code{parse} method, \code{ast}, represents the abstract syntax tree to be parsed. It is a required parameter that must comply with the \texttt{Program} format as specified by ESTree. Additionally, the optional second parameter \code{options} can be provided to configure which optimization passes to apply to each control flow graph of the flow program.
+
+\paragraph{exportAsObject.} The \code{exportAsObject} method accepts a single parameter named \code{flowProgram} that has been returned from the \code{parse} method. It exports the given program and all its functions as a JavaScript object structure that holds all nodes and edges in flat arrays rather than nested object structures, thus allowing for simpler serialization and deserialization. The \code{exportAsObject} method is discussed in detail in section \ref{sec:object-export}.
+
+\paragraph{exportAsJson.} Similar to the \code{exportAsObject} method, \code{exportAsJson} takes a flow program and converts it to a JavaScript object with a different structure. However, \code{exportAsJson} does not return the new object itself, but a string containing its JSON representation. An optional settings parameter allows for customization of the JSON indentation. \code{exportAsJson} is explained in section \ref{sec:json-export}.
+
+\paragraph{exportAsDot.} Lastly, the \code{exportAsDot} method  exports a single control flow graph in DOT format. The resulting graph description can be passed along to a visualization tool to render an image of the given control flow graph. \code{exportAsDot} is detailed in section \ref{sec:dot-export}.

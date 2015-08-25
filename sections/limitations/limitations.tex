@@ -1,0 +1,13 @@
+\section{Limitations}
+\label{sec:limitations}
+
+This section details the limitations that are an inherent part of the process of deriving an accurate control flow graph from a JavaScript program. They mainly revolve around dynamic language features, closure and scope management, and implicit errors.
+
+\subsection{Dynamic Language Features}
+
+A highly dynamic programming language, JavaScript supports various language constructs that are difficult or even impossible to analyze statically. Two examples are string-based access to object properties and the evaluation of strings as code. If the strings in question depend on environment variables such as time, user input, or external data, it is generally undecidable which piece of code is going to be executed.
+
+\input{sections/limitations/string-based-property-access.tex}
+\input{sections/limitations/evaluating-strings-as-code.tex}
+\input{sections/limitations/dynamically-creating-functions.tex}
+\input{sections/limitations/implicitly-thrown-errors.tex}

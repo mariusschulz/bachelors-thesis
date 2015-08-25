@@ -1,0 +1,16 @@
+\section{Algorithm}
+\label{sec:algorithm}
+
+This section illustrates the algorithmic approach used to derive a static control flow graph from a JavaScript program. It describes the graph format and how to parse statements and expressions. This section also discusses techniques for simplifying negated conditions where possible.
+
+
+\input{sections/algorithm/obtaining-the-ast}
+
+\subsection{Deriving a Control Flow Graph}
+
+Once the abstract syntax tree of a program has been generated, it can be traversed to successively construct the control flow graph.
+
+\input{sections/algorithm/graph-format}
+\input{sections/algorithm/statements-and-expressions}
+\input{sections/algorithm/composing-patterns}
+\input{sections/algorithm/inverting-conditions}

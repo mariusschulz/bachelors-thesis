@@ -1,0 +1,8 @@
+\subsubsection{DOT Export}
+\label{sec:dot-export}
+
+Flow programs can be exported in DOT \cite{dot-language} format as well. DOT is a graph description language that can be consumed by visualization tools such as Graphviz \cite{graphviz} to render various sorts of graphs. In the case of Styx, the DOT export is a directed and generally not acyclic graph. It describes a finite state machine representing the control flow in a program or function.
+
+In contrast to the JSON export, the DOT export does not include the entire flow program, but only a single control flow graph. Since Styx works on an \textit{intra}procedural rather than an \textit{inter}procedural level, the control flow graphs of the program and its functions are parsed separately from each other and can therefore be visualized independently.
+
+\nameref{sec:appendix} shows an example of a control flow graph exported as DOT and its respective Graphviz rendering.

@@ -1,0 +1,10 @@
+\subsubsection{Programming Languages}
+
+When choosing the technology stack to build upon, the goal was to develop a piece of software that could run in any modern JavaScript environment, including both Node.js and all major browsers' JavaScript engines. Taking that into account, an adequate language version to target is ECMAScript 5, which was standardized \cite{es5-spec} in 2009. Now in 2015, it is widely supported in various environments and therefore a suitable language target.
+
+However, the Styx core library is not written in JavaScript directly, but in TypeScript \cite{typescript}, a superset of JavaScript that adds optional static typing to the language. After the TypeScript compiler has found a given program to be type-correct, it emits an equivalent JavaScript program with all type annotations removed. Therefore, the type information is a purely compile-time artifact without any runtime manifestation. The decision in favor of TypeScript was made to take advantage of the following benefits:
+
+\begin{enumerate}
+  \item Static typing helps detect a certain class of errors at compile-time by checking that a program is written in a type-correct manner. This is especially helpful in a dynamic language like JavaScript, which allows any function to be called with an arbitrary number of arguments.
+  \item TypeScript supports the new ECMAScript 2015 language version that was standardized \cite{es2015-spec} in June of 2015. It adds a plethora of features to JavaScript, such as a native module system, lexical scoping, arrow functions, destructuring, and more. The TypeScript transpiler is capable of down-leveling most new language features such that engines implementing ECMAScript 5 can understand them. This allows for using next-generation JavaScript without sacrificing compatibility.
+\end{enumerate}

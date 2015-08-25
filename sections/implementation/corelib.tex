@@ -1,0 +1,11 @@
+\subsection{Core Library}
+\label{sec:styx-corelib}
+
+The key part of the implementation is the Styx core library. It implements the outlined algorithm for deriving the control flow graph from a program or function's abstract syntax tree. Styx itself does not have any dependencies. However, it requires that the abstract syntax tree it is handed follow the  ESTree \cite{estree-spec} specification. The two JavaScript parsers Acorn \cite{acorn} and Esprima \cite{esprima}, for instance, return an abstract syntax tree in ESTree format that can directly be passed along to the Styx parser.
+
+\input{sections/implementation/corelib/public-interface.tex}
+\input{sections/implementation/corelib/object-export.tex}
+\input{sections/implementation/corelib/json-export.tex}
+\input{sections/implementation/corelib/dot-export.tex}
+\input{sections/implementation/corelib/installation-via-npm.tex}
+\input{sections/implementation/corelib/building-from-source.tex}

@@ -1,0 +1,19 @@
+\subsection{Motivation}
+\label{sec:motivation}
+
+When JavaScript\footnote{``JavaScript'' is a trademark of Oracle Corporation. The untrademarked name used in the language specification \cite{es5-spec} as standardized by Ecma International\textsuperscript{\textregistered} is ``ECMAScript''. Following common usage (and for ease of reference), the name ``JavaScript'' will be used hereinafter to refer to the ECMAScript language.} first appeared in 1995, it was originally envisioned to be a small scripting language for adding interactivity to web pages, which were mostly static HTML documents back then. The expected number of lines for the average script was probably in the dozens. Nowadays, JavaScript applications with several hundred thousand lines of code are being developed and maintained. The language has been brought to more and more environments and platforms over time, such as was the case with Node.js \cite{nodejs} in 2009, and it still continues to grow in usage.
+
+As the size of programs written in JavaScript grows, so does their complexity. Large code bases are considerably harder to understand, debug, and maintain than small ones. Programmers are therefore more likely to introduce bugs into the software as the code base grows. The problem with JavaScript is that it offers little help to programmers during implementation. A dynamically typed language, JavaScript enforces neither consistent type usage nor guaranteed initialization of variables, for example. Moreover, some unfortunate language design choices\footnote{Outside of \textit{strict mode}, assigning a value to a simple identifier than cannot be resolved leads to the automatic creation of a global variable of that name. This behavior is usually unintended and does more harm than good.} may lead to unexpected and undesirable behavior at runtime.
+
+The growing ubiquity of JavaScript and its usage in large-scale, critical applications awakens interest in techniques for automatic program verification. Static analysis tools can help developers find erroneous pieces of code by looking for patterns that, according to a given defect model, lead to commonly made mistakes. Data flow analysis, for example, inspects declarations and usages of variables in a program to track the propagation of their values. Using data flow analyses, one can try to answer the following questions:
+
+\begin{itemize}
+  \setlength\itemsep{0pt}
+  \item Is there a code path that leaves a given variable uninitialized?
+  \item Is the value of a given variable always within a certain range?
+  \item Does a given variable always contain values of the same type?
+  \item Does a given variable ever change after its initial assignment?
+  \item Are there any code parts that can never be reached (dead code)?
+\end{itemize}
+
+At the heart of such data flow analyses lies the inspection of the underlying program's static control flow graph, which must therefore be derived.

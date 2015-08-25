@@ -1,0 +1,27 @@
+\subsubsection{Source Code}
+
+The program below implements a function that returns the Collatz sequence for a given natural number \emph{n}. The \code{collatzSequence} function has been deliberately kept simple for the sake of brevity. Therefore, it does not perform extensive argument validation, for example.
+
+\vspace{0.15cm}
+
+\begin{minted}[xleftmargin=0.75cm,linenos]{js}
+function collatzSequence(n) {
+    var sequence = [n];
+
+    if (n <= 0) {
+        return [];
+    }
+
+    while (n !== 1) {
+        if (n % 2 === 0) {
+            n = n / 2;
+        } else {
+            n = 3 * n + 1;
+        }
+
+        sequence.push(n);
+    }
+
+    return sequence;
+}
+\end{minted}

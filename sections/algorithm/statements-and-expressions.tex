@@ -1,0 +1,34 @@
+\subsubsection{Parsing Statements and Expressions}
+
+Every JavaScript program's abstract syntax tree in ESTree format has a root node of type \code{Program} with a \code{body} property that contains an array of all the main program's statements. The simple JavaScript program at the end of the previous section consists of two statements: a variable declaration and an expression statement. \code{x = x + 1} is an assignment expression and therefore not a statement on its own, but since it appears in statement position, the expression is treated as a statement of type \code{ExpressionStatement}.
+
+The process of traversing the abstract syntax tree and deriving a control flow graph from the statements and expressions encountered can be nicely broken up into many functions, each of which knows how to parse a specific node type. One such function can call another to parse the various components of the node it knows how to parse, thereby creating a hierarchy of nested function calls. For example, the aforementioned program could be parsed by a function call hierarchy similar to the following pseudocode:
+
+\begin{Verbatim}[xleftmargin=0.5cm]
+- parseProgram()
+    - parseStatements()
+        - parseStatement()
+            - parseVariableDeclaration()
+                - parseVariableDeclarators()
+                    - parseVariableDeclarator()
+                        - parseInit()
+                            - parseExpression()
+                                - parseLiteral()
+                        - parseIdentifier()
+        - parseStatement()
+            - parseExpressionStatement()
+                - parseExpression()
+                    - parseAssignmentExpression()
+                        - parseRightHandSide()
+                            - parseBinaryExpression()
+                                - parseLeftHandSide()
+                                    - parseIdentifier()
+                                - parseRightHandSide()
+                                    - parseLiteral()
+                                - parseOperator()
+                        - parseLeftHandSide()
+                            - parseIdentifier()
+                        - parseOperator()
+\end{Verbatim}
+
+In most cases, every expression statement adds to the control flow graph a new node with an incoming edge that is annotated with the expression. An exception to that rule, however, are expression statements that wrap expressions of type \code{SequenceExpression}.\footnote{A sequence expression as specified by ESTree \cite{estree-spec} consists of two or more expressions, separated by the comma operator, and evaluates to the value of its last expression.} Rather than adding a single node, an individual node is added for each expression in the sequence, which slightly reduces the complexity of those edge annotations in the control flow graph.

@@ -1,0 +1,38 @@
+\subsubsection{String-Based Property Access}
+
+JavaScript offers a lightweight syntax for creating object literals. Objects consist of properties that map string keys to arbitrary values. This includes functions too, which are first-class citizens in JavaScript:
+
+\begin{minted}[linenos,xleftmargin=0.75cm]{js}
+var calculator = {
+    increment: function(x) {
+        return x + 1;
+    },
+    square: function(x) {
+        return x * x;
+    }
+};
+\end{minted}
+
+There are two ways to access an object's properties. The first option is to use \textit{dot notation} as known from other languages with a C-like syntax:
+
+\begin{minted}[linenos,xleftmargin=0.75cm]{js}
+var two = calculator.increment(1);
+\end{minted}
+
+The other option is to use the property's string key in conjunction with \textit{square bracket notation} that looks for a property with exactly that key:
+
+\begin{minted}[linenos,xleftmargin=0.75cm]{js}
+var two = calculator["increment"](1);
+\end{minted}
+
+No matter which of the two notations was used to look up the property, the value \code{undefined} is returned if neither the object itself nor any of the objects in its \emph{prototype chain}\footnote{See section 4.2.1 of the ECMAScript Language Specification. \cite{es5-spec}} define a property with the given key. The above invocations of the \code{increment} method would have failed with a \code{TypeError} if the property lookup returned any value that was not a function.
+
+The difficulty of statically analyzing code that accesses object properties using string keys and square bracket notation lies in the observation that it is generally undecidable which (if any) property's value is returned. In the above example, it is trivial for a static analyzer to recognize that the provided key is a string literal with a known constant value. However, the JavaScript grammar allows an arbitrary expression to be placed within the square brackets of the property access; the result of evaluating this expression is then coerced into a string and used as a property key. The following four examples show how different the results of invoking a method accessed this way can be, depending on the value of the property key:
+
+\begin{itemize}
+  \item If \code{key} contains the value \code{"increment"}, calling \code{calculator[key](5)} will return the value \code{6}. Similarly, if \code{key} is set to \code{"square"}, calling \code{calculator[key](5)} will return the value \code{25}.
+  \item If \code{key} is set to \code{"hasOwnProperty"}, calling \code{calculator[key](5)} will look for and invoke the \code{hasOwnProperty} method defined on the \code{Object} prototype, which returns \code{false} because the object does not define a property with that key.
+  \item If \code{key} is set to \code{"invalid property"}, calling \code{calculator[key](5)} will trigger a lookup for a method of that name. Neither the object itself nor any other object in its prototype chain defines such a property, and therefore \code{undefined} is returned. Since \code{undefined} cannot be invoked as a function, a \code{TypeError} is thrown.
+\end{itemize}
+
+This illustrates nicely how drastically the control flow behavior can vary depending on the value of the expression within the square brackets. In cases where the key is set to \code{"increment"}, \code{"square"}, or the name of any method in the prototype chain, that method will be executed. If, however, the key cannot be found, an exception will be thrown, thereby causing an abrupt completion and a jump in control flow.

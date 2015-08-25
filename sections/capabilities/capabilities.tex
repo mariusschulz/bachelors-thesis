@@ -1,0 +1,13 @@
+\section{Capabilities}
+
+This thesis outlines the derivation of intraprocedural, static control flow graphs based on a JavaScript program's abstract syntax tree. The goal is to capture the semantics of the main program or any of its functions in the respective control flow graphs, which can be used as the basis for various static data flow analyses as discussed in ``\nameref{sec:motivation}''.
+
+
+\subsection{Control Flow Graph Derivation}
+
+The derivation of a control flow graph as described in this thesis is based on a purely static analysis of the abstract syntax tree of a program. Consequently, no analysis of actual runtime behavior is performed. This limits the capabilities somewhat, since JavaScript is a highly dynamic programming language with support for language constructs that are difficult to analyze statically. Because of the highly dynamic nature of the language, the control flow graph derivation is subject to the limitations listed in section \ref{sec:limitations} (``\nameref{sec:limitations}''). Despite these difficulties, the algorithm analyzing a program's abstract syntax tree must not falsify the program semantics. It must therefore make conservative assumptions about the dynamic parts of the program in order to guarantee sound control flow analysis. Section \ref{sec:algorithm} (``\nameref{sec:algorithm}'') describes the algorithmic approach in detail. Section \ref{sec:implementation} (``\nameref{sec:implementation}'') presents an exemplary implementation that was developed as part of the work on this thesis.
+
+
+\subsection{Export in Various Formats}
+
+In addition to deriving control flow graphs, the exemplary implementation is capable of exporting its resulting data structures. A given control flow graph can be exported as a JavaScript object, which can be analyzed in the JavaScript program using the derivation library. Additionally, control flow graphs can be serialized as JSON for further processing in arbitrary tools, programming languages, and environments. Finally, the DOT export allows for serializing the structure of a control flow graph using the DOT \cite{dot-language} graph description language. Visualization tools like Graphviz \cite{graphviz} can then layout the graph and render it as an image. The different export formats are explained in sections \ref{sec:object-export} (``\nameref{sec:object-export}''), \ref{sec:json-export} (``\nameref{sec:json-export}''), and \ref{sec:dot-export} (``\nameref{sec:dot-export}''). \nameref{sec:appendix} shows examples of serialized exports in JSON and DOT format.
