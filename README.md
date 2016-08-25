@@ -1,6 +1,6 @@
 # Bachelor's Thesis
 
-This repository contains the LaTeX source code for my Bachelor's thesis in computer science:
+This repository contains the LaTeX source code for my Bachelor's thesis in computer science (see [thesis.pdf](https://github.com/mariusschulz/bachelors-thesis/blob/master/thesis.pdf)):
 
 <p align="center">
     <a href="https://github.com/mariusschulz/bachelors-thesis/blob/master/thesis.pdf" title="Deriving Control Flow Graphs from JavaScript Programs">
